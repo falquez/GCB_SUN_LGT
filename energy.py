@@ -111,21 +111,44 @@ energiesEL = mapData(energiesEL1, 'dw0', lambda r: r['dE']/(2*r['x']*r['L']))
 
 reducedE = reduceFitData(groupBy(energiesEL, ['g', 'r']), modelL, 'L', 'w0', {'w0':-0.6,'A':1})
 
+data_04 = reducedE[np.where(np.isclose(reducedE['r'],0.4)) ]
 data_08 = reducedE[np.where(np.isclose(reducedE['r'],0.8)) ]
+data_12 = reducedE[np.where(np.isclose(reducedE['r'],1.2)) ]
 
+fitE1_04 = modelE.fit(data_04['w0'],     g=data_04['g'],      a=2, b=1,E0=0)
+fitE2_04 = modelE.fit(data_04[:-1]['w0'],g=data_04[:-1]['g'], a=2, b=1,E0=0)
 
 fitE1_08 = modelE.fit(data_08['w0'],     g=data_08['g'],      a=2, b=1,E0=0)
 fitE2_08 = modelE.fit(data_08[:-1]['w0'],g=data_08[:-1]['g'], a=2, b=1,E0=0)
 
-csvE = np.zeros((1,), np.dtype([('r', '<f8'), ('w', '<f8'), ('dw', '<f8'), ('de', '<f8')]) )
-csvE['r'] = data_08[0]['r']
-csvE[0]['w']  = fitE1_08.params['E0'].value
-csvE[0]['de'] = 2/np.pi + fitE1_08.params['E0'].value
+fitE1_12 = modelE.fit(data_12['w0'],     g=data_12['g'],      a=2, b=1,E0=0)
+fitE2_12 = modelE.fit(data_12[:-1]['w0'],g=data_12[:-1]['g'], a=2, b=1,E0=0)
+
+csvE = np.zeros((3,), np.dtype([('r', '<f8'), ('w', '<f8'), ('dw', '<f8'), ('de', '<f8')]) )
+
+csvE[0]['r'] = data_04[0]['r']
+csvE[0]['w']  = fitE1_04.params['E0'].value
+csvE[0]['de'] = 2/np.pi + fitE1_04.params['E0'].value
+
+dw_fit = fitE1_04.params['E0'].stderr
+dw_sys = fitE2_04.params['E0'].value-fitE1_04.params['E0'].value
+csvE[0]['dw'] = np.sqrt(dw_fit*dw_fit+dw_sys*dw_sys)
+
+csvE[1]['r'] = data_08[0]['r']
+csvE[1]['w']  = fitE1_08.params['E0'].value
+csvE[1]['de'] = 2/np.pi + fitE1_08.params['E0'].value
 
 dw_fit = fitE1_08.params['E0'].stderr
 dw_sys = fitE2_08.params['E0'].value-fitE1_08.params['E0'].value
-csvE[0]['dw'] = np.sqrt(dw_fit*dw_fit+dw_sys*dw_sys)
+csvE[1]['dw'] = np.sqrt(dw_fit*dw_fit+dw_sys*dw_sys)
 
+csvE[2]['r'] = data_12[0]['r']
+csvE[2]['w']  = fitE1_12.params['E0'].value
+csvE[2]['de'] = 2/np.pi + fitE1_12.params['E0'].value
+
+dw_fit = fitE1_12.params['E0'].stderr
+dw_sys = fitE2_08.params['E0'].value-fitE1_08.params['E0'].value
+csvE[2]['dw'] = np.sqrt(dw_fit*dw_fit+dw_sys*dw_sys)
 
 np.savetxt(dataDir+"energy.csv", csvE, header=" m/g w dw de")
 

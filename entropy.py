@@ -138,9 +138,11 @@ fit100_04 = modelLog.fit(data100_04['S'],g=data100_04['g'], c=2, b=0,s=1)
 fit100_08 = modelLog.fit(data100_08['S'],g=data100_08['g'], c=2, b=0,s=1)
 fit100_12 = modelLog.fit(data100_12['S'],g=data100_12['g'], c=2, b=0,s=1)
 
+fit200_04 = modelLog.fit(data200_04['S'],g=data200_04['g'], c=2, b=0,s=1)
 fit200_08 = modelLog.fit(data200_08['S'],g=data200_08['g'], c=2, b=0,s=1)
+fit200_12 = modelLog.fit(data200_12['S'],g=data200_12['g'], c=2, b=0,s=1)
 
-csvS = np.zeros((4,), np.dtype([ ('L', '<i4'), ('r', '<f8'), ('c', '<f8'), ('dc', '<f8'), ('de', '<f8')]) )
+csvS = np.zeros((6,), np.dtype([ ('L', '<i4'), ('r', '<f8'), ('c', '<f8'), ('dc', '<f8'), ('de', '<f8')]) )
 
 csvS[0]['L']  = data100_04[0]['L']
 csvS[0]['r']  = data100_04[0]['r']
@@ -148,11 +150,17 @@ csvS[0]['c']  = fit100_04.params['c'].value
 csvS[0]['dc'] = fit100_04.params['c'].stderr
 csvS[0]['de'] = 2.0 - fit100_04.params['c'].value
 
-csvS[1]['L']  = data100_08[0]['L']
-csvS[1]['r']  = data100_08[0]['r']
-csvS[1]['c']  = fit100_08.params['c'].value
-csvS[1]['dc'] = fit100_08.params['c'].stderr
-csvS[1]['de'] = 2.0 - fit100_08.params['c'].value
+csvS[1]['L']  = data200_04[0]['L']
+csvS[1]['r']  = data200_04[0]['r']
+csvS[1]['c']  = fit200_04.params['c'].value
+csvS[1]['dc'] = fit200_04.params['c'].stderr
+csvS[1]['de'] = 2.0 - fit200_04.params['c'].value
+
+csvS[2]['L']  = data100_08[0]['L']
+csvS[2]['r']  = data100_08[0]['r']
+csvS[2]['c']  = fit100_08.params['c'].value
+csvS[2]['dc'] = fit100_08.params['c'].stderr
+csvS[2]['de'] = 2.0 - fit100_08.params['c'].value
 
 csvS[3]['L']  = data200_08[0]['L']
 csvS[3]['r']  = data200_08[0]['r']
@@ -160,12 +168,17 @@ csvS[3]['c']  = fit200_08.params['c'].value
 csvS[3]['dc'] = fit200_08.params['c'].stderr
 csvS[3]['de'] = 2.0 - fit200_08.params['c'].value
 
-csvS[2]['L']  = data100_12[0]['L']
-csvS[2]['r']  = data100_12[0]['r']
-csvS[2]['c']  = fit100_12.params['c'].value
-csvS[2]['dc'] = fit100_12.params['c'].stderr
-csvS[2]['de'] = 2.0 - fit100_12.params['c'].value
+csvS[4]['L']  = data100_12[0]['L']
+csvS[4]['r']  = data100_12[0]['r']
+csvS[4]['c']  = fit100_12.params['c'].value
+csvS[4]['dc'] = fit100_12.params['c'].stderr
+csvS[4]['de'] = 2.0 - fit100_12.params['c'].value
 
+csvS[5]['L']  = data200_12[0]['L']
+csvS[5]['r']  = data200_12[0]['r']
+csvS[5]['c']  = fit200_12.params['c'].value
+csvS[5]['dc'] = fit200_12.params['c'].stderr
+csvS[5]['de'] = 2.0 - fit200_12.params['c'].value
 
 np.savetxt(dataDir+"entropy.csv", csvS, header="m/g L c dc de")
 
