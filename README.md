@@ -11,5 +11,4 @@ and entanglement entropy for (1 + 1) SU(2).
 
 Our numerical results support recent discussions in the
 literature that only the full entanglement entropy constructed on an extended lattice Hilbert
-space correctly recovers the vacuum entanglement of the continuum QFT.
-
+space correctly recovers the CFT central charge in the continuum limit.
